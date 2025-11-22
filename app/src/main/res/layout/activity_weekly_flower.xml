@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Flower drawing area -->
+    <com.example.tinythanks.FlowerView
+        android:id="@+id/flower_view"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/text_total_entries"
+        android:text="Total entries:"
+        android:textSize="20sp"
+        android:layout_marginBottom="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_active_days"
+        android:text="Active days:"
+        android:textSize="20sp"
+        android:layout_marginBottom="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_flower_state"
+        android:text="Flower state:"
+        android:textSize="20sp"
+        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Single toggle button: difficult <-> okay -->
+    <android.widget.Button
+        android:id="@+id/btn_toggle_week_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="This week was difficult 😔" />
+
+    <!-- Title for this week's entries -->
+    <TextView
+        android:id="@+id/text_week_entries_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="This week&#39;s entries"
+        android:textSize="18sp" />
+
+    <!-- RecyclerView for weekly entries -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_week_entries"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

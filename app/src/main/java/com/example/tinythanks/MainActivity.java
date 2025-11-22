@@ -17,42 +17,48 @@ public class MainActivity extends AppCompatActivity {
     private GratitudeViewModel gratitudeViewModel;
     private TextView emptyView;
 
-    // Adapter'ı sınıf içinde tanımlıyoruz ki, observe bloğu erişebilsin
     private GratitudeAdapter adapter;
-    // HATA: Önceden bu satır silindiği için hata veriyordu!
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // --- 1. FAB Butonunu Bağlama ---
+        // --- 1. FAB button ---
         FloatingActionButton fab = findViewById(R.id.fab_add_entry);
+
+        // Short click → AddGratitudeActivity (NEW ENTRY)
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, AddGratitudeActivity.class);
             startActivity(intent);
         });
 
-        // --- 2. RecyclerView ve EmptyView'ı Bağlama ---
+        // Long press → FlowerGardenActivity (flower garden)
+        fab.setOnLongClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, FlowerGardenActivity.class);
+            startActivity(intent);
+            return true;
+        });
+
+
+        // --- 2. RecyclerView & empty view ---
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        emptyView = findViewById(R.id.empty_view); // Yeni XML ID'si
+        emptyView = findViewById(R.id.empty_view);
 
-        // Adapter'ı Başlatma (Sınıfın dışında tanımladığımız değişkene atama)
         adapter = new GratitudeAdapter(this);
-
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // --- 3. ViewModel'i Başlatma ---
-        gratitudeViewModel = (GratitudeViewModel) new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()))
-                .get(GratitudeViewModel.class);
+        // --- 3. ViewModel ---
+        gratitudeViewModel = new ViewModelProvider(
+                this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
+        ).get(GratitudeViewModel.class);
 
-
-        // --- 4. LiveData'yı Gözlemleme ve Görünürlük Mantığı ---
+        // --- 4. LiveData observe ---
         gratitudeViewModel.getAllEntries().observe(this, entries -> {
             adapter.setEntries(entries);
 
-            // Liste boşsa uyarıyı göster, değilse listeyi göstery
             if (entries == null || entries.isEmpty()) {
                 emptyView.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);

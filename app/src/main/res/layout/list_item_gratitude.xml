@@ -1,54 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginTop="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">  <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="12dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="10dp"
+    card_view:cardCornerRadius="22dp"
+    card_view:cardElevation="5dp"
+    card_view:cardUseCompatPadding="true"
+    android:foreground="?attr/selectableItemBackground">
 
-    <ImageView
-        android:id="@+id/item_photo"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:scaleType="centerCrop"
-        android:background="#D0D0D0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="Gratitude Item Photo" />
-
-    <TextView
-        android:id="@+id/item_timestamp"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:text="21 October 2025"
-        android:textSize="12sp"
-        android:textColor="#7B4FEA"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/item_photo"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:orientation="vertical"
+        android:background="#FFFFFF">
 
-    <TextView
-        android:id="@+id/item_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="12dp"
-        android:text="The text of the tiny thank goes here."
-        android:textSize="14sp"
-        android:maxLines="3"
-        android:ellipsize="end"
-        app:layout_constraintTop_toBottomOf="@id/item_timestamp"
-        app:layout_constraintStart_toEndOf="@id/item_photo"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- STORY FRAME (PHOTO AREA) -->
+        <FrameLayout
+            android:id="@+id/frame_photo"
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:background="@drawable/bg_story_frame"
+            android:padding="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/item_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Entry photo" />
+
+        </FrameLayout>
+
+        <!-- TEXT AREA -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="10dp">
+
+            <!-- DATE / TIME -->
+            <TextView
+                android:id="@+id/item_timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="21 Oct 2025, 8:15 PM"
+                android:textSize="11sp"
+                android:textColor="#9A8FB3" />
+
+            <!-- SINGLE-LINE CAPTION -->
+            <TextView
+                android:id="@+id/item_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Today I felt grateful for..."
+                android:textSize="15sp"
+                android:textColor="#3A324B"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.cardview.widget.CardView>

@@ -1,6 +1,7 @@
 package com.example.tinythanks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,6 @@ public class GratitudeAdapter extends RecyclerView.Adapter<GratitudeAdapter.Grat
         mInflater = LayoutInflater.from(context);
     }
 
-
     static class GratitudeViewHolder extends RecyclerView.ViewHolder {
         private final TextView itemTextView;
         private final TextView itemTimestampView;
@@ -35,18 +35,15 @@ public class GratitudeAdapter extends RecyclerView.Adapter<GratitudeAdapter.Grat
 
         private GratitudeViewHolder(View itemView) {
             super(itemView);
-
             itemTextView = itemView.findViewById(R.id.item_text);
             itemTimestampView = itemView.findViewById(R.id.item_timestamp);
             itemPhotoView = itemView.findViewById(R.id.item_photo);
         }
     }
 
-
     @NonNull
     @Override
     public GratitudeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View itemView = mInflater.inflate(R.layout.list_item_gratitude, parent, false);
         return new GratitudeViewHolder(itemView);
     }
@@ -55,30 +52,51 @@ public class GratitudeAdapter extends RecyclerView.Adapter<GratitudeAdapter.Grat
     public void onBindViewHolder(@NonNull GratitudeViewHolder holder, int position) {
         GratitudeEntry current = mEntries.get(position);
 
+        // Caption text (single line)
         holder.itemTextView.setText(current.getGratitudeText());
 
+        // Timestamp
         Date date = new Date(current.getTimestamp());
-        DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
+        DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance(
+                DateFormat.SHORT,
+                DateFormat.SHORT,
+                Locale.getDefault()
+        );
         String formattedDate = dateFormat.format(date);
         holder.itemTimestampView.setText(formattedDate);
 
+        // Photo vs placeholder
         String photoPath = current.getPhotoPath();
         if (photoPath != null && !photoPath.isEmpty()) {
             holder.itemPhotoView.setImageURI(Uri.parse(photoPath));
+        } else {
+            // varsa kendi ic_placeholder'ını, yoksa şimdilik gallery ikonu
+            holder.itemPhotoView.setImageResource(R.drawable.ic_placeholder);
+            // Eğer ic_placeholder yoksa: android.R.drawable.ic_menu_gallery
+            // holder.itemPhotoView.setImageResource(android.R.drawable.ic_menu_gallery);
         }
-        else {
-            holder.itemPhotoView.setImageResource(android.R.drawable.ic_menu_gallery);
-        }
+
+        // Detail screen
+        holder.itemView.setOnClickListener(v -> {
+            Context context = v.getContext();
+            Intent intent = new Intent(context, EntryDetailActivity.class);
+
+            intent.putExtra(EntryDetailActivity.EXTRA_ID, current.getId());
+            intent.putExtra(EntryDetailActivity.EXTRA_TEXT, current.getGratitudeText());
+            intent.putExtra(EntryDetailActivity.EXTRA_PHOTO_PATH, current.getPhotoPath());
+            intent.putExtra(EntryDetailActivity.EXTRA_TIMESTAMP, current.getTimestamp());
+
+            context.startActivity(intent);
+        });
     }
 
     @Override
     public int getItemCount() {
-
         return mEntries.size();
     }
 
     public void setEntries(List<GratitudeEntry> entries) {
-        this.mEntries = entries;
+        this.mEntries = entries != null ? entries : Collections.emptyList();
         notifyDataSetChanged();
     }
 }

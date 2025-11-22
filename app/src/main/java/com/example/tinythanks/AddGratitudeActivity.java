@@ -160,7 +160,7 @@ public class AddGratitudeActivity extends AppCompatActivity {
 
     private void showImagePreview(Uri uri) {
         currentPhotoPath = uri.toString();
--
+
         ImageView photoPreview = findViewById(R.id.image_view_photo_preview);
         photoPreview.setImageURI(uri);
     }

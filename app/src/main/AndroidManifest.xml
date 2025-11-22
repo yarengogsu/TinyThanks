@@ -13,6 +13,18 @@
         android:theme="@style/Theme.TinyThanks" >
 
         <activity
+            android:name=".FlowerGardenActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".EntryDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".WeeklyFlowerActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true" >
             <intent-filter>
@@ -24,6 +36,7 @@
         <activity
             android:name=".AddGratitudeActivity"
             android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.tinythanks.fileprovider"
