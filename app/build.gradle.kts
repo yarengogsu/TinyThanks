@@ -44,6 +44,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("com.prolificinteractive:material-calendarview:1.4.3")
     val roomVersion = "2.6.1"
 
     // 1. Room Kütüphaneleri

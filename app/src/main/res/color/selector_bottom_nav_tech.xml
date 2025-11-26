@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Seçili (Tıklanmış) Durum: MAVİ -->
+    <item android:color="#2563EB" android:state_checked="true" />
+
+    <!-- Varsayılan Durum: GRİ -->
+    <item android:color="#9CA3AF" />
+</selector>

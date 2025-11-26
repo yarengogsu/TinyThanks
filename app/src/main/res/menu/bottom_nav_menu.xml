@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_nav_home_tech"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/nav_history"
+        android:icon="@drawable/ic_nav_history_tech"
+        android:title="Journey" />
+
+    <item
+        android:id="@+id/placeholder"
+        android:title=""
+        android:enabled="false" />
+
+    <item
+        android:id="@+id/nav_ideas"
+        android:icon="@drawable/ic_nav_ideas"
+        android:title="Ideas" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_nav_profile_tech"
+        android:title="Profile" />
+
+</menu>

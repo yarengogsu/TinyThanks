@@ -1,28 +1,30 @@
 package com.example.tinythanks;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
 import java.util.List;
 
 public class GratitudeViewModel extends AndroidViewModel {
 
     private final GratitudeRepository repository;
-    private final LiveData<List<GratitudeEntry>> allEntries;
+    private final LiveData<List<GratitudeEntry>> allGratitudes;
 
     public GratitudeViewModel(@NonNull Application application) {
         super(application);
         repository = new GratitudeRepository(application);
-        allEntries = repository.getAllEntries();   // <-- BURASI ÖNEMLİ
+
+        // Repository'deki isimle birebir aynı olmalı: getAllGratitudes()
+        allGratitudes = repository.getAllEntries();
     }
 
+    // Listeyi Activity'ye göndermek için
     public LiveData<List<GratitudeEntry>> getAllEntries() {
-        return allEntries;
+        return allGratitudes;
     }
 
+    // Yeni kayıt eklemek için
     public void insert(GratitudeEntry entry) {
         repository.insert(entry);
     }

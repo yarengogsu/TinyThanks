@@ -1,32 +1,37 @@
 package com.example.tinythanks;
 
 import android.app.Application;
-
 import androidx.lifecycle.LiveData;
-
 import java.util.List;
 
 public class GratitudeRepository {
 
-    private final GratitudeDao dao;
-    private final LiveData<List<GratitudeEntry>> allEntries;
+    private GratitudeDao gratitudeDao;
+    private LiveData<List<GratitudeEntry>> allGratitudes;
 
-    public GratitudeRepository(Application application) {
-        // DOĞRU database sınıfı: GratitudeDatabase
+    // Constructor (Kurucu Metot)
+    GratitudeRepository(Application application) {
         GratitudeDatabase db = GratitudeDatabase.getDatabase(application);
-        dao = db.gratitudeDao();
-        allEntries = dao.getAllEntries();
+        gratitudeDao = db.gratitudeDao();
+
+        // DAO dosyasında verdiğimiz isimle çağırıyoruz: getAllGratitudes()
+        allGratitudes = gratitudeDao.getAllEntries();
     }
 
-    public LiveData<List<GratitudeEntry>> getAllEntries() {
-        return allEntries;
+    // Tüm listeyi ViewModel'e göndermek için
+    LiveData<List<GratitudeEntry>> getAllEntries() {
+        return allGratitudes;
     }
 
-    public void insert(GratitudeEntry entry) {
-        GratitudeDatabase.databaseWriteExecutor.execute(() -> dao.insert(entry));
+    // Yeni kayıt eklemek için (Arka planda çalışır)
+    void insert(GratitudeEntry entry) {
+        GratitudeDatabase.databaseWriteExecutor.execute(() -> {
+            gratitudeDao.insert(entry);
+        });
     }
-
-    public void update(GratitudeEntry entry) {
-        GratitudeDatabase.databaseWriteExecutor.execute(() -> dao.update(entry));
+    void update(GratitudeEntry entry) {
+        GratitudeDatabase.databaseWriteExecutor.execute(() -> {
+            gratitudeDao.update(entry);
+        });
     }
 }

@@ -19,4 +19,6 @@ public interface GratitudeDao {
     @Update
     void update(GratitudeEntry entry);
 
+    @Query("DELETE FROM gratitude_table")
+    void deleteAll();
 }

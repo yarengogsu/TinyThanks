@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Tıklanınca: MAVİ -->
+    <item android:color="#2563EB" android:state_checked="true" />
+
+    <!-- Normal Halde: KOYU GRİ (Siyah yerine koyu gri daha şık durur) -->
+    <item android:color="#4B5563" />
+</selector>

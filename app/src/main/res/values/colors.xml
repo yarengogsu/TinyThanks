@@ -2,4 +2,19 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Modern Tech Renkleri -->
+    <color name="tech_bg">#F6F8FC</color>         <!-- Açık Gri Arka Plan -->
+    <color name="tech_primary">#2563EB</color>    <!-- Canlı Mavi -->
+    <color name="tech_text_main">#1F2937</color>  <!-- Koyu Gri Yazı -->
+    <color name="tech_text_sec">#9CA3AF</color>   <!-- Açık Gri Yazı -->
+    <color name="tech_card_bg">#FFFFFF</color>
+
+    <!-- Navigasyon İkon Rengi -->
+    <color name="nav_item_color">#6B7280</color>
+
+    <!-- HATA ÇÖZÜCÜ: Eski isimleri yenilere bağlıyoruz -->
+    <!-- Böylece diğer dosyalarda 'tech_blue' arandığında 'tech_primary' kullanılacak -->
+    <color name="tech_blue">@color/tech_primary</color>
+    <color name="tech_text_secondary">@color/tech_text_sec</color>
 </resources>

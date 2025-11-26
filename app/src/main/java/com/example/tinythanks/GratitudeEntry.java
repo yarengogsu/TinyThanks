@@ -44,4 +44,5 @@ public class GratitudeEntry {
         this.photoPath=photoPath;
         this.timestamp=timestamp;
     }
+
 }

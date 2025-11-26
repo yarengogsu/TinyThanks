@@ -1,9 +1,40 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Uygulamanın Ana Teması -->
     <style name="Base.Theme.TinyThanks" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- İstersen buraya genel renk ayarları ekleyebilirsin -->
     </style>
 
     <style name="Theme.TinyThanks" parent="Base.Theme.TinyThanks" />
+
+    <style name="FabCircleStyle" parent="ShapeAppearance.Material3.Corner.Full">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="RoundedImage" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    <style name="CalendarHeader" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CalendarDate" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">#E0E7FF</item>
+    </style>
+
+    <style name="CalendarWeek" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">#93C5FD</item> <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CircleImage" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="CircleFAB" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>

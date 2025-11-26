@@ -4,63 +4,71 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="10dp"
-    card_view:cardCornerRadius="22dp"
-    card_view:cardElevation="5dp"
+    android:layout_marginVertical="8dp"
     card_view:cardUseCompatPadding="true"
+    card_view:cardCornerRadius="20dp"
+    card_view:cardElevation="4dp"
     android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:orientation="horizontal"
+        android:padding="14dp"
+        android:background="@drawable/bg_gratitude_card">
 
-        <!-- STORY FRAME (PHOTO AREA) -->
-        <FrameLayout
-            android:id="@+id/frame_photo"
-            android:layout_width="match_parent"
-            android:layout_height="190dp"
-            android:background="@drawable/bg_story_frame"
-            android:padding="10dp">
+        <!-- FOTO -->
+        <ImageView
+            android:id="@+id/item_photo"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="12dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_entry_image"
+            android:clipToOutline="true"
+            android:contentDescription="Entry photo" />
 
-            <ImageView
-                android:id="@+id/item_photo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:contentDescription="Entry photo" />
-
-        </FrameLayout>
-
-        <!-- TEXT AREA -->
+        <!-- METİN BLOĞU -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="14dp"
-            android:paddingVertical="10dp">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <!-- DATE / TIME -->
+            <!-- TARİH -->
             <TextView
                 android:id="@+id/item_timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="21 Oct 2025, 8:15 PM"
-                android:textSize="11sp"
+                android:text="Nov 22, 10:30 AM"
+                android:textSize="12sp"
                 android:textColor="#9A8FB3" />
 
-            <!-- SINGLE-LINE CAPTION -->
+            <!-- ŞÜKRAN METNİ -->
             <TextView
                 android:id="@+id/item_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Today I felt grateful for..."
-                android:textSize="15sp"
-                android:textColor="#3A324B"
-                android:maxLines="1"
+                android:text="Write about your moment..."
+                android:textSize="16sp"
+                android:textColor="#2D2636"
+                android:maxLines="3"
                 android:ellipsize="end" />
+
+            <!-- FOTO BADGE -->
+            <TextView
+                android:id="@+id/item_badge_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="📸 Photo attached"
+                android:textSize="11sp"
+                android:textColor="#5E6B4E"
+                android:background="@drawable/bg_entry_badge"
+                android:visibility="gone" />
 
         </LinearLayout>
 
