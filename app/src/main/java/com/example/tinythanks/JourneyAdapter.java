@@ -19,6 +19,18 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
 
     private List<GratitudeEntry> entryList = new ArrayList<>();
 
+    // --- TIKLAMA OLAYI İÇİN ARABİRİM ---
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(GratitudeEntry entry);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+    // -----------------------------------
+
     public void setEntries(List<GratitudeEntry> entries) {
         this.entryList = entries;
         notifyDataSetChanged();
@@ -36,24 +48,25 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         GratitudeEntry currentEntry = entryList.get(position);
 
-        // --- DÜZELTME BURADA ---
-        // Senin modelindeki isim: getGratitudeText()
         holder.tvPreview.setText(currentEntry.getGratitudeText());
 
-        // Tarih Formatı
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         String dateString = sdf.format(new Date(currentEntry.getTimestamp()));
         holder.tvDate.setText(dateString);
 
-        // --- DÜZELTME BURADA ---
-        // Senin modelindeki isim: getPhotoPath()
         String path = currentEntry.getPhotoPath();
-
         if (path != null && !path.isEmpty()) {
             holder.imgThumbnail.setImageURI(Uri.fromFile(new File(path)));
         } else {
             holder.imgThumbnail.setImageResource(R.drawable.img_morning);
         }
+
+        // --- KARTA TIKLANINCA ---
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(currentEntry);
+            }
+        });
     }
 
     @Override

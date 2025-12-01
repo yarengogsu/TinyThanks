@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="2dp"
+        android:paddingHorizontal="0dp">
+
+        <CheckBox
+            android:id="@+id/cbTaskCompleted"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:buttonTint="#2563EB"
+            android:scaleX="0.9"
+            android:scaleY="0.9"/>
+
+        <TextView
+            android:id="@+id/tvTaskTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sample Task"
+            android:textSize="13sp"
+            android:textColor="#111827"
+            android:layout_marginStart="6dp"/>
+
+        <ImageView
+            android:id="@+id/btnDeleteTask"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:tint="#9CA3AF"
+            android:padding="6dp"
+            android:alpha="0.5"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F3F4F6"
+        android:layout_marginStart="34dp"
+        android:layout_marginBottom="2dp"/>
+
+</LinearLayout>

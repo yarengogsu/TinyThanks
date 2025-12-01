@@ -7,18 +7,14 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
-@Database(entities = {GratitudeEntry.class}, version = 1, exportSchema = false)
+@Database(entities = {GratitudeEntry.class, TaskEntry.class}, version = 3, exportSchema = false)
 public abstract class GratitudeDatabase extends RoomDatabase {
 
     public abstract GratitudeDao gratitudeDao();
 
     private static volatile GratitudeDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
-
-
-    static final ExecutorService databaseWriteExecutor =
-            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     static GratitudeDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
@@ -26,7 +22,7 @@ public abstract class GratitudeDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     GratitudeDatabase.class, "gratitude_database")
-                            .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration() // Veritabanı değişince eskileri silip yenisini kurar
                             .build();
                 }
             }

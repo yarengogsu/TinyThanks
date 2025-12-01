@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -13,24 +14,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide; // Glide kütüphanesi ekliyoruz (Büyük resimler için şart)
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Shows a single gratitude entry in detail:
- * - big photo (if any)
- * - editable text
- * - date / time
- * - "Save changes" button that updates Room
- */
 public class EntryDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TEXT = "extra_text";
     public static final String EXTRA_PHOTO_PATH = "extra_photo_path";
     public static final String EXTRA_TIMESTAMP = "extra_timestamp";
+    public static final String EXTRA_MOOD = "extra_mood"; // YENİ: Mood verisi için anahtar
 
     private ImageView photoView;
     private TextView dateText;
@@ -43,6 +40,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     private int entryId = -1;
     private String photoPath;
     private long timestamp;
+    private int currentMood; // YENİ: Mevcut modu saklamak için
 
     private GratitudeViewModel viewModel;
 
@@ -61,18 +59,19 @@ public class EntryDetailActivity extends AppCompatActivity {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
         ).get(GratitudeViewModel.class);
 
-        // --- read data from Intent ---
+        // --- Verileri Al ---
         String text = getIntent().getStringExtra(EXTRA_TEXT);
         photoPath = getIntent().getStringExtra(EXTRA_PHOTO_PATH);
         timestamp = getIntent().getLongExtra(EXTRA_TIMESTAMP, -1);
         entryId = getIntent().getIntExtra(EXTRA_ID, -1);
+        currentMood = getIntent().getIntExtra(EXTRA_MOOD, 3); // Varsayılan 3 (İyi)
 
-        // set text
+        // Yazıyı koy
         if (!TextUtils.isEmpty(text)) {
             contentEdit.setText(text);
         }
 
-        // set date
+        // Tarihi koy
         if (timestamp > 0) {
             Date date = new Date(timestamp);
             dateText.setText(dateFormat.format(date));
@@ -80,41 +79,38 @@ public class EntryDetailActivity extends AppCompatActivity {
             dateText.setText("");
         }
 
-        // load photo if exists
-        if (!TextUtils.isEmpty(photoPath)) {
-            File file = new File(photoPath);
-            if (file.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
-                photoView.setImageBitmap(bitmap);
-            } else {
-                photoView.setImageDrawable(null);
-            }
+        // Resmi koy (Glide ile daha güvenli)
+        if (photoPath != null && !photoPath.isEmpty()) {
+            Glide.with(this)
+                    .load(new File(photoPath))
+                    .into(photoView);
         } else {
-            photoView.setImageDrawable(null);
+            photoView.setImageResource(R.drawable.img_morning); // Varsayılan
         }
 
-        // --- save changes button ---
+        // --- DEĞİŞİKLİKLERİ KAYDET ---
         saveButton.setOnClickListener(v -> {
             String newText = contentEdit.getText().toString().trim();
 
             if (entryId == -1) {
-                Toast.makeText(this, "Cannot update: missing entry id", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Hata: ID bulunamadı", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (TextUtils.isEmpty(newText)) {
-                Toast.makeText(this, "Text cannot be empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Lütfen bir şeyler yazın", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // keep same timestamp & photoPath; only text is changed
-            GratitudeEntry updated = new GratitudeEntry(newText, photoPath, timestamp);
-            updated.setId(entryId);  // IMPORTANT: tell Room which row to update
+            // GÜNCELLEME NESNESİ OLUŞTURMA (Düzeltilen Kısım)
+            // Artık 'currentMood' değerini de veriyoruz ki eski mod silinmesin.
+            GratitudeEntry updated = new GratitudeEntry(newText, photoPath, timestamp, currentMood);
+            updated.setId(entryId);
 
             viewModel.update(updated);
 
-            Toast.makeText(this, "Entry updated", Toast.LENGTH_SHORT).show();
-            finish(); // go back to previous screen
+            Toast.makeText(this, "Güncellendi! ✅", Toast.LENGTH_SHORT).show();
+            finish();
         });
     }
 }

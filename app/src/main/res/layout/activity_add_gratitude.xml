@@ -5,21 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC"
+    android:background="@color/tech_bg"
     android:padding="24dp">
 
+    <!-- BAŞLIK -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="New Gratitude"
-        android:textColor="#111827"
+        android:textColor="@color/tech_text_main"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- FOTOĞRAF ALANI -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutAddPhoto"
         android:layout_width="match_parent"
@@ -33,21 +35,21 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_camera_blue"
-            app:tint="#2563EB"
             app:layout_constraintBottom_toTopOf="@+id/tvAddPhoto"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            app:tint="@color/tech_primary" />
 
         <TextView
             android:id="@+id/tvAddPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Photo"
-            android:textColor="#2563EB"
-            android:textStyle="bold"
             android:layout_marginTop="8dp"
+            android:text="Add Photo"
+            android:textColor="@color/tech_primary"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,32 +68,197 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- METİN GİRİŞ ALANI -->
     <EditText
         android:id="@+id/etGratitudeContent"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/bg_white_rounded"
         android:gravity="top|start"
         android:hint="What are you grateful for?"
         android:padding="16dp"
-        android:textColor="#111827"
-        android:textColorHint="#9CA3AF"
+        android:textColor="@color/tech_text_main"
+        android:textColorHint="@color/tech_text_sec"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnSave"
-        app:layout_constraintTop_toBottomOf="@id/layoutAddPhoto"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBottom_toTopOf="@+id/layoutMoodSelector"
+        app:layout_constraintTop_toBottomOf="@id/layoutAddPhoto" />
+
+    <!-- MOOD SEÇİCİ (ETİKETLİ) -->
+    <LinearLayout
+        android:id="@+id/layoutMoodSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSave">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="What's your vibe today?"
+            android:textColor="@color/nav_item_color"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- 1. PEACEFUL -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/btnMoodPeaceful"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_mood_peaceful"
+                    app:tint="@color/psych_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Peaceful"
+                    android:textSize="11sp"
+                    android:textColor="@color/nav_item_color"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- 2. JOYFUL -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/btnMoodJoyful"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_mood_joyful"
+                    app:tint="@color/psych_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Joyful"
+                    android:textSize="11sp"
+                    android:textColor="@color/nav_item_color"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- 3. ENERGETIC -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/btnMoodEnergetic"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_mood_energetic"
+                    app:tint="@color/psych_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Energetic"
+                    android:textSize="11sp"
+                    android:textColor="@color/nav_item_color"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- 4. CREATIVE -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/btnMoodCreative"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_mood_creative"
+                    app:tint="@color/psych_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Creative"
+                    android:textSize="11sp"
+                    android:textColor="@color/nav_item_color"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- 5. LOVED -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/btnMoodLoved"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_mood_loved"
+                    app:tint="@color/psych_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loved"
+                    android:textSize="11sp"
+                    android:textColor="@color/nav_item_color"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- KAYDET BUTONU -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/tech_primary"
         android:text="Save Entry"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#2563EB"
         app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

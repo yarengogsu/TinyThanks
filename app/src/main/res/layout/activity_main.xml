@@ -47,12 +47,12 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/imgAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@android:drawable/ic_menu_gallery"
-                    android:scaleType="centerInside"
-                    android:padding="8dp"
-                    app:tint="#9CA3AF"/>
+                    android:src="@mipmap/ic_launcher"
+                    android:scaleType="centerCrop"
+                    android:padding="0dp"/>
             </com.google.android.material.card.MaterialCardView>
 
             <androidx.cardview.widget.CardView
@@ -149,7 +149,7 @@
                         android:id="@+id/txt_streak_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12 Days"
+                        android:text="0 Days"
                         android:textColor="#2563EB"
                         android:textSize="26sp"
                         android:textStyle="bold"
@@ -173,155 +173,109 @@
                 app:layout_constraintTop_toBottomOf="@id/card_hero_container">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="213dp"
+                    android:layout_height="181dp"
                     android:padding="20dp">
 
                     <TextView
+                        android:id="@+id/tvMoodTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Weekly Mood"
                         android:textColor="#6B7280"
                         android:textSize="13sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+                        android:id="@+id/flowerContainer"
+                        android:layout_width="145dp"
+                        android:layout_height="114dp"
+                        android:layout_below="@id/tvMoodTitle"
+                        android:layout_marginTop="2dp"></RelativeLayout>
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_alignParentBottom="true"
+                        android:id="@+id/imgEmptyMoodPlaceholder"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_below="@id/tvMoodTitle"
+                        android:layout_centerInParent="true"
                         android:src="@drawable/ic_chart_blue"
-                        android:scaleType="fitXY"
-                        app:tint="#2563EB"/>
+                        android:visibility="gone"
+                        app:tint="#2563EB" />
+
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_calendar_widget"
-                android:layout_width="0dp"
+                android:id="@+id/card_tasks_widget"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="180dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="24dp"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="#FFFFFF"
                 app:strokeWidth="0dp"
-                app:layout_constraintHorizontal_weight="1.3"
+                app:layout_constraintTop_toBottomOf="@id/card_streak"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/card_quick_add"
-                app:layout_constraintTop_toBottomOf="@id/card_streak">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Calendar"
-                        android:textStyle="bold"
-                        android:textColor="#111827"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="12dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView android:text="S" style="@style/CalendarDayText"/>
-                        <TextView android:text="M" style="@style/CalendarDayText"/>
-                        <TextView android:text="T" style="@style/CalendarDayText"/>
-                        <TextView android:text="W" style="@style/CalendarDayText"/>
-                        <TextView android:text="T" style="@style/CalendarDayText"/>
-                        <TextView android:text="F" style="@style/CalendarDayText"/>
-                        <TextView android:text="S" style="@style/CalendarDayText"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-                        <TextView android:text="1" style="@style/CalendarNumText"/>
-                        <TextView android:text="2" style="@style/CalendarNumText"/>
-                        <TextView android:text="3" style="@style/CalendarNumText"/>
-                        <TextView android:text="4" style="@style/CalendarNumText"/>
-                        <TextView android:text="5" style="@style/CalendarNumText"/>
-                        <TextView android:text="6" style="@style/CalendarNumText"/>
-                        <TextView android:text="7" style="@style/CalendarNumText"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:orientation="horizontal">
-
-                        <FrameLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content">
-                            <View android:layout_width="24dp" android:layout_height="24dp" android:background="@drawable/ic_launcher_background" android:backgroundTint="#2563EB" android:layout_gravity="center"/>
-                            <TextView android:text="8" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:textColor="#FFFFFF" android:textSize="12sp" android:layout_gravity="center"/>
-                        </FrameLayout>
-
-                        <TextView android:text="9" style="@style/CalendarNumText"/>
-                        <TextView android:text="10" style="@style/CalendarNumText"/>
-                        <TextView android:text="11" style="@style/CalendarNumText"/>
-                        <TextView android:text="12" style="@style/CalendarNumText"/>
-                        <TextView android:text="13" style="@style/CalendarNumText"/>
-                        <TextView android:text="14" style="@style/CalendarNumText"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_quick_add"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="10dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:strokeWidth="0dp"
-                app:layout_constraintHorizontal_weight="0.7"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/card_calendar_widget"
-                app:layout_constraintTop_toBottomOf="@id/card_mood"
-                app:layout_constraintBottom_toBottomOf="@+id/card_calendar_widget">
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Quick Add"
+                        android:text="Tiny Tasks"
                         android:textStyle="bold"
                         android:textColor="#111827"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="16dp"/>
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/fab_quick_inner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@android:drawable/ic_input_add"
-                        app:backgroundTint="#2563EB"
-                        app:tint="#FFFFFF"
-                        app:elevation="0dp"
+                        android:textSize="16sp"
                         android:layout_marginBottom="8dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvTasks"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Log now"
-                        android:textColor="#9CA3AF"
-                        android:textSize="12sp"/>
+                        android:nestedScrollingEnabled="false"
+                        android:clipToPadding="false"
+                        android:paddingBottom="4dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_input_area"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="8dp"
+                        android:layout_marginTop="12dp">
+
+                        <EditText
+                            android:id="@+id/etNewTask"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Add a new task..."
+                            android:textColor="#111827"
+                            android:textColorHint="#6B7280"
+                            android:textSize="14sp"
+                            android:background="@null"
+                            android:inputType="textCapSentences"
+                            android:maxLines="1"
+                            android:padding="4dp"/>
+
+                        <ImageView
+                            android:id="@+id/btnAddNewTask"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@android:drawable/ic_input_add"
+                            app:tint="#2563EB"
+                            android:padding="2dp"/>
+                    </LinearLayout>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -333,14 +287,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-
         app:backgroundTint="#FFFFFF"
-
         app:fabAlignmentMode="center"
-        app:fabCradleMargin="10dp"
+        app:fabCradleMargin="16dp"
         app:fabCradleRoundedCornerRadius="32dp"
-        app:fabCradleVerticalOffset="6dp"
-
+        app:fabCradleVerticalOffset="0dp"
         app:elevation="8dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -365,9 +316,7 @@
         android:src="@android:drawable/ic_input_add"
         app:tint="#FFFFFF"
         app:backgroundTint="#2563EB"
-
         app:layout_anchor="@id/bottomAppBar"
-
         app:maxImageSize="32dp"
         app:shapeAppearanceOverlay="@style/CircleFAB"/>
 

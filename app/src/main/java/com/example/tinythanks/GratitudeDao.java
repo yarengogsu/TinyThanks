@@ -2,23 +2,35 @@ package com.example.tinythanks;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-import androidx.room.Delete;
 import java.util.List;
 
 @Dao
 public interface GratitudeDao {
+
+    // --- GRATITUDE (ŞÜKÜR) KISMI ---
     @Insert
     void insert(GratitudeEntry entry);
-
-    @Query("SELECT * FROM gratitude_table ORDER BY timestamp DESC")
-    LiveData<List<GratitudeEntry>> getAllEntries();
 
     @Update
     void update(GratitudeEntry entry);
 
-    @Query("DELETE FROM gratitude_table")
-    void deleteAll();
+    @Query("SELECT * FROM gratitude_table ORDER BY timestamp DESC")
+    LiveData<List<GratitudeEntry>> getAllGratitudes();
+
+    // --- YENİ EKLENEN: TASK (GÖREV) KISMI ---
+    @Insert
+    void insertTask(TaskEntry task);
+
+    @Update
+    void updateTask(TaskEntry task);
+
+    @Delete
+    void deleteTask(TaskEntry task);
+
+    @Query("SELECT * FROM task_table ORDER BY id DESC")
+    LiveData<List<TaskEntry>> getAllTasks();
 }

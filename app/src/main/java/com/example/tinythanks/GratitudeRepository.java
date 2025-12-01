@@ -8,30 +8,60 @@ public class GratitudeRepository {
 
     private GratitudeDao gratitudeDao;
     private LiveData<List<GratitudeEntry>> allGratitudes;
+    private LiveData<List<TaskEntry>> allTasks; // Görevler için
 
-    // Constructor (Kurucu Metot)
+    // Constructor
     GratitudeRepository(Application application) {
         GratitudeDatabase db = GratitudeDatabase.getDatabase(application);
         gratitudeDao = db.gratitudeDao();
 
-        // DAO dosyasında verdiğimiz isimle çağırıyoruz: getAllGratitudes()
-        allGratitudes = gratitudeDao.getAllEntries();
+        // DİKKAT: Dao dosyasındaki isimle aynı olmalı (getAllGratitudes)
+        allGratitudes = gratitudeDao.getAllGratitudes();
+
+        // Görevleri de alalım
+        allTasks = gratitudeDao.getAllTasks();
     }
 
-    // Tüm listeyi ViewModel'e göndermek için
-    LiveData<List<GratitudeEntry>> getAllEntries() {
+    // --- GRATITUDE (ŞÜKÜR) METODLARI ---
+
+    // ViewModel bu ismi kullanacak: getAllGratitudes
+    LiveData<List<GratitudeEntry>> getAllGratitudes() {
         return allGratitudes;
     }
 
-    // Yeni kayıt eklemek için (Arka planda çalışır)
     void insert(GratitudeEntry entry) {
         GratitudeDatabase.databaseWriteExecutor.execute(() -> {
             gratitudeDao.insert(entry);
         });
     }
+
     void update(GratitudeEntry entry) {
         GratitudeDatabase.databaseWriteExecutor.execute(() -> {
             gratitudeDao.update(entry);
+        });
+    }
+
+    // --- TASK (GÖREV) METODLARI ---
+
+    LiveData<List<TaskEntry>> getAllTasks() {
+        return allTasks;
+    }
+
+    void insertTask(TaskEntry task) {
+        GratitudeDatabase.databaseWriteExecutor.execute(() -> {
+            gratitudeDao.insertTask(task);
+        });
+    }
+
+    void updateTask(TaskEntry task) {
+        GratitudeDatabase.databaseWriteExecutor.execute(() -> {
+            gratitudeDao.updateTask(task);
+        });
+    }
+
+    void deleteTask(TaskEntry task) {
+        GratitudeDatabase.databaseWriteExecutor.execute(() -> {
+            gratitudeDao.deleteTask(task);
         });
     }
 }

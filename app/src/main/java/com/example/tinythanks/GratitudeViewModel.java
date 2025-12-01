@@ -16,7 +16,7 @@ public class GratitudeViewModel extends AndroidViewModel {
         repository = new GratitudeRepository(application);
 
         // Repository'deki isimle birebir aynı olmalı: getAllGratitudes()
-        allGratitudes = repository.getAllEntries();
+        allGratitudes = repository.getAllGratitudes();
     }
 
     // Listeyi Activity'ye göndermek için
@@ -31,5 +31,21 @@ public class GratitudeViewModel extends AndroidViewModel {
 
     public void update(GratitudeEntry entry) {
         repository.update(entry);
+    }
+    // --- TASK METODLARI ---
+    public LiveData<List<TaskEntry>> getAllTasks() {
+        return repository.getAllTasks();
+    }
+
+    public void insertTask(TaskEntry task) {
+        repository.insertTask(task);
+    }
+
+    public void updateTask(TaskEntry task) {
+        repository.updateTask(task);
+    }
+
+    public void deleteTask(TaskEntry task) {
+        repository.deleteTask(task);
     }
 }

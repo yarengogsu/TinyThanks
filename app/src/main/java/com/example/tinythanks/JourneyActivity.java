@@ -73,7 +73,18 @@ public class JourneyActivity extends AppCompatActivity {
 
         final JourneyAdapter adapter = new JourneyAdapter();
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(entry -> {
+            // Tıklanan kaydı düzenlemek için AddGratitudeActivity'yi açıyoruz
+            Intent intent = new Intent(JourneyActivity.this, AddGratitudeActivity.class);
 
+            // Verileri çantaya koyup gönderiyoruz
+            intent.putExtra("EXTRA_ID", entry.getId());
+            intent.putExtra("EXTRA_CONTENT", entry.getGratitudeText());
+            intent.putExtra("EXTRA_IMAGE_PATH", entry.getPhotoPath());
+            intent.putExtra("EXTRA_TIMESTAMP", entry.getTimestamp());
+
+            startActivity(intent);
+        });
         // Database Connection
         gratitudeViewModel = new ViewModelProvider(this).get(GratitudeViewModel.class);
         gratitudeViewModel.getAllEntries().observe(this, entries -> {
