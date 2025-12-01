@@ -8,6 +8,7 @@
     android:background="#F8FAFC"
     tools:context=".MainActivity">
 
+    <!-- ÜSTTEKİ SCROLL ALANI -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- App title -->
             <TextView
                 android:id="@+id/tv_app_title"
                 android:layout_width="wrap_content"
@@ -35,6 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="@+id/card_avatar"/>
 
+            <!-- Avatar -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_avatar"
                 android:layout_width="44dp"
@@ -55,6 +58,7 @@
                     android:padding="0dp"/>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Hero card -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_hero_container"
                 android:layout_width="match_parent"
@@ -108,6 +112,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- STREAK CARD -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_streak"
                 android:layout_width="0dp"
@@ -157,6 +162,7 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- WEEKLY MOOD CARD -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_mood"
                 android:layout_width="0dp"
@@ -173,8 +179,8 @@
                 app:layout_constraintTop_toBottomOf="@id/card_hero_container">
 
                 <RelativeLayout
-                    android:layout_width="213dp"
-                    android:layout_height="181dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:padding="20dp">
 
                     <TextView
@@ -186,18 +192,19 @@
                         android:textSize="13sp"
                         android:textStyle="bold" />
 
-                    <RelativeLayout
-                        android:id="@+id/flowerContainer"
-                        android:layout_width="145dp"
-                        android:layout_height="114dp"
+                    <!-- Çiçek bahçesi custom view -->
+                    <com.example.tinythanks.MoodGardenView
+                        android:id="@+id/moodGardenView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_below="@id/tvMoodTitle"
-                        android:layout_marginTop="2dp"></RelativeLayout>
+                        android:layout_marginTop="4dp"/>
 
+                    <!-- Boş placeholder -->
                     <ImageView
                         android:id="@+id/imgEmptyMoodPlaceholder"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_below="@id/tvMoodTitle"
                         android:layout_centerInParent="true"
                         android:src="@drawable/ic_chart_blue"
                         android:visibility="gone"
@@ -206,6 +213,7 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- TINY TASKS CARD -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_tasks_widget"
                 android:layout_width="match_parent"
@@ -282,6 +290,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- ALT NAV + FAB -->
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"

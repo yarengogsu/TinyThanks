@@ -12,10 +12,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +24,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -46,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtStreakCount;
     private ImageView imgAvatar;
 
-    // Tiny Tasks Değişkenleri
+    // Mood Garden
+    private MoodGardenView moodGardenView;
+    private ImageView imgEmptyMoodPlaceholder;
+
+    // Tiny Tasks
     private EditText etNewTask;
     private ImageView btnAddNewTask;
     private RecyclerView rvTasks;
@@ -57,133 +60,64 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // --- 1. BİLDİRİM SİSTEMİNİ HAZIRLA ---
+        // Bildirim sistemi
         createNotificationChannel();
         askNotificationPermission();
         scheduleDailyNotification();
 
-        // --- 2. BİLEŞENLERİ BAĞLAMA ---
+        // View bağlama
         FloatingActionButton fabMain = findViewById(R.id.fab_add);
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         txtStreakCount = findViewById(R.id.txt_streak_count);
         imgAvatar = findViewById(R.id.imgAvatar);
 
-        // --- 3. VIEWMODEL VE ÇİÇEK MANTIĞI ---
+        // Mood Garden view + placeholder
+        moodGardenView = findViewById(R.id.moodGardenView);
+        imgEmptyMoodPlaceholder = findViewById(R.id.imgEmptyMoodPlaceholder);
+
+        // ViewModel
         gratitudeViewModel = new ViewModelProvider(this).get(GratitudeViewModel.class);
 
+        // Gratitude girdilerini gözlemle
         gratitudeViewModel.getAllEntries().observe(this, entries -> {
-            // XML'deki bileşenleri bul
-            RelativeLayout flowerContainer = findViewById(R.id.flowerContainer);
-            ImageView imgEmptyPlaceholder = findViewById(R.id.imgEmptyMoodPlaceholder);
-            TextView tvMoodTitle = findViewById(R.id.tvMoodTitle); // Başlık
 
             if (entries != null && !entries.isEmpty()) {
-                // Veri var: Boş ikonunu gizle, çiçek kutusunu göster
-                imgEmptyPlaceholder.setVisibility(android.view.View.GONE);
-                flowerContainer.setVisibility(android.view.View.VISIBLE);
+                // Boş placeholder gizle, bahçeyi göster
+                imgEmptyMoodPlaceholder.setVisibility(android.view.View.GONE);
+                moodGardenView.setVisibility(android.view.View.VISIBLE);
 
-                // A. Streak Hesapla
+                // Streak hesapla
                 int currentStreak = calculateStreak(entries);
                 txtStreakCount.setText(currentStreak + " Days");
 
-                // B. Çiçek Oluşturma Mantığı
-                flowerContainer.removeAllViews(); // Önce eski çiçekleri temizle
-
-                // Son 8 girdiyi al (Çok fazla yaprak üst üste binmesin diye)
+                // En yeni girdiler başta olacak şekilde listeyi ters çevir
                 List<GratitudeEntry> recentEntries = new ArrayList<>(entries);
-                Collections.reverse(recentEntries); // En yeniler başa gelsin
-                int petalCount = Math.min(recentEntries.size(), 8);
+                Collections.reverse(recentEntries);
 
-                // Matematik: 360 dereceyi yaprak sayısına böl
-                float angleStep = 360f / petalCount;
+                // En fazla 7 çiçek
+                int maxFlowers = Math.min(recentEntries.size(), 7);
+                List<GratitudeEntry> subset = recentEntries.subList(0, maxFlowers);
 
-                // YARIÇAP AYARI:
-                // Ekran yoğunluğuna göre 35dp mesafe.
-                float density = getResources().getDisplayMetrics().density;
-                int radius = (int) (35 * density);
-
-                for (int i = 0; i < petalCount; i++) {
-                    GratitudeEntry entry = recentEntries.get(i);
-
-                    // 1. Yaprağı Oluştur
-                    ImageView petal = new ImageView(this);
-                    // Keskin yaprak şeklini kullanıyoruz
-                    petal.setImageResource(R.drawable.ic_flower_petal_sharp);
-
-                    // 2. Yaprağı Merkeze Koy (Başlangıç noktası olarak)
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT
-                    );
-                    params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-                    petal.setLayoutParams(params);
-
-                    // --- 3. RENK BELİRLEME (YENİ 5'Lİ SİSTEM) ---
-                    // Artık 1, 2, 3, 4, 5 değerlerini kontrol ediyoruz.
-                    int color;
-                    int moodVal = (int) entry.getMood();
-
-                    if (moodVal == 1) {
-                        color = ContextCompat.getColor(this, R.color.psych_peaceful);   // Yeşil (Huzurlu)
-                    } else if (moodVal == 2) {
-                        color = ContextCompat.getColor(this, R.color.psych_joyful);     // Sarı (Neşeli)
-                    } else if (moodVal == 3) {
-                        color = ContextCompat.getColor(this, R.color.psych_energetic);  // Mavi (Enerjik)
-                    } else if (moodVal == 4) {
-                        color = ContextCompat.getColor(this, R.color.psych_creative);   // Mor (Yaratıcı)
-                    } else {
-                        color = ContextCompat.getColor(this, R.color.psych_loved);      // Pembe (Sevgi)
-                    }
-
-                    // Rengi Uygula
-                    petal.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
-
-                    // 4. Döndür ve Yerleştir (Matematiksel Düzeltme)
-                    float angle = i * angleStep;
-                    double rad = Math.toRadians(angle);
-
-                    // A) Yaprağın ucunu dışarı baktır
-                    petal.setRotation(angle);
-
-                    // B) Yaprağın konumunu hesapla
-                    float xPos = (float) (radius * Math.sin(rad));
-                    float yPos = (float) (-radius * Math.cos(rad));
-
-                    petal.setTranslationX(xPos);
-                    petal.setTranslationY(yPos);
-
-                    // 5. Kutuyu Ekle
-                    flowerContainer.addView(petal);
-                }
-
-                // C. Çiçeğin Ortasındaki Beyaz Daireyi Ekle
-                ImageView centerCircle = new ImageView(this);
-                centerCircle.setImageResource(R.drawable.ic_flower_center);
-                RelativeLayout.LayoutParams centerParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                centerParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-                centerCircle.setLayoutParams(centerParams);
-                flowerContainer.addView(centerCircle);
+                // Bahçeye ver
+                moodGardenView.setEntries(subset);
 
             } else {
-                // Veri yoksa
+                // Hiç entry yoksa
                 txtStreakCount.setText("0 Days");
-                flowerContainer.setVisibility(android.view.View.GONE);
-                imgEmptyPlaceholder.setVisibility(android.view.View.VISIBLE);
+                moodGardenView.setVisibility(android.view.View.GONE);
+                imgEmptyMoodPlaceholder.setVisibility(android.view.View.VISIBLE);
+                moodGardenView.setEntries(null);
             }
         });
 
-        // --- 4. TINY TASKS ---
+        // Tiny Tasks kurulumu
         setupTinyTasks();
 
-        // --- 5. TIKLAMA OLAYLARI ---
-        fabMain.setOnClickListener(view -> {
-            startActivity(new Intent(MainActivity.this, AddGratitudeActivity.class));
-        });
+        // FAB
+        fabMain.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, AddGratitudeActivity.class)));
 
-        // --- 6. ALT MENÜ GEÇİŞLERİ ---
+        // Bottom Nav
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -204,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
-
     }
 
     @Override
@@ -213,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         loadProfileImage();
     }
 
-    // --- PROFİL FOTOSUNU YÜKLEME ---
+    // Profil foto
     private void loadProfileImage() {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         String photoUriString = prefs.getString("userPhoto", "");
@@ -229,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // --- TINY TASKS KURULUMU ---
+    // Tiny Tasks
     private void setupTinyTasks() {
         rvTasks = findViewById(R.id.rvTasks);
         etNewTask = findViewById(R.id.etNewTask);
@@ -269,23 +202,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // --- BİLDİRİM VE ALARM ---
+    // Bildirim
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Daily Reminder";
             String description = "Reminds you to log gratitude";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("tiny_thanks_channel", name, importance);
+            NotificationChannel channel =
+                    new NotificationChannel("tiny_thanks_channel", name, importance);
             channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }
 
     private void askNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
             }
         }
     }
@@ -293,7 +231,12 @@ public class MainActivity extends AppCompatActivity {
     private void scheduleDailyNotification() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, ReminderReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
 
         SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         int hour = prefs.getInt("reminderHour", 20);
@@ -310,12 +253,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    AlarmManager.INTERVAL_DAY, pendingIntent);
+            alarmManager.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY,
+                    pendingIntent
+            );
         }
     }
 
-    // --- STREAK MANTIĞI ---
+    // Streak
     private int calculateStreak(List<GratitudeEntry> entries) {
         if (entries.isEmpty()) return 0;
         Set<String> uniqueDates = new HashSet<>();
